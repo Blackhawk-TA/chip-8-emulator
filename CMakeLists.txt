@@ -10,8 +10,8 @@ add_executable(chip_8_emulator main.c
         src/utils/utils.h
         src/utils/setup.c
         src/utils/setup.h
-        src/utils/sdl_wrapper.c
-        src/utils/sdl_wrapper.h
+        src/sdl/sdl_wrapper.c
+        src/sdl/sdl_wrapper.h
         src/components/display.c
         src/components/display.h
         src/components/stack.c

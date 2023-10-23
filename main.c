@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "src/utils/setup.h"
 #include "src/utils/utils.h"
-#include "src/utils/sdl_wrapper.h"
+#include "src/sdl/sdl_wrapper.h"
 #include "src/components/stack.h"
 
 int main(int argc, char **argv) {
