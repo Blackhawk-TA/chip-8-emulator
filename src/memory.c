@@ -6,54 +6,24 @@
 #include <stdlib.h>
 #include "memory.h"
 
-uint8 memory[4096];
-const uint16 last_memory_addr = 4095;
+u_int8_t memory[4096];
+const u_int16_t last_memory_addr = 4095;
 
-const uint16 font_char_count = 80;
-const uint16 font[80] = {
-		0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-		0x20, 0x60, 0x20, 0x20, 0x70, // 1
-		0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-		0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-		0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-		0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-		0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-		0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-		0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-		0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-		0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-		0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-		0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-		0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-		0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-		0xF0, 0x80, 0xF0, 0x80, 0x80  // F
-};
 
-uint8 read(uint16 address) {
+u_int8_t memory_read(u_int16_t address) {
 	if (address > last_memory_addr) {
-		printf("tried reading invalid memory address");
-		exit(1);
+		perror("Error: Tried reading invalid memory address\n");
+		exit(EXIT_FAILURE);
 	}
 
 	return memory[address];
 }
 
-void write(uint16 address, uint8 value) {
+void memory_write(u_int16_t address, u_int8_t value) {
 	if (address > last_memory_addr) {
-		printf("tried writing to invalid memory address");
-		exit(1);
+		perror("Error: Tried writing to invalid memory address\n");
+		exit(EXIT_FAILURE);
 	}
 
 	memory[address] = value;
-}
-
-void load_font() {
-	// Font is stored in address range: 0x050 - 0x09F
-	for (uint16 i = 0; i < font_char_count; i++) {
-		memory[0x50 + i] = font[i];
-	}
-}
-
-void load_rom() {
-
 }

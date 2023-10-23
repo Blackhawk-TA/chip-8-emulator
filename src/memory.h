@@ -6,11 +6,9 @@
 #define CHIP_8_EMULATOR_MEMORY_H
 
 #include "utils.h"
+#include <stdlib.h>
 
-uint8 read(uint16 address);
-void write(uint16 address, uint8 value);
-
-void load_font();
-void load_rom();
+u_int8_t memory_read(u_int16_t address);
+void memory_write(u_int16_t address, u_int8_t value);
 
 #endif //CHIP_8_EMULATOR_MEMORY_H
