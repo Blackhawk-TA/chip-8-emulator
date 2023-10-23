@@ -13,17 +13,17 @@ char* get_path_from_parameter(char **argv) {
 	// Get char array of parameter name
 	char *param_name = strtok(argv[1], "=");
 	if (param_name == NULL) {
-		perror("Error: Invalid parameter separation\n");
+		printf("Error: Invalid parameter separation\n");
 		exit(EXIT_FAILURE);
 	} else if (strcmp(param_name, "--rom") != 0) {
-		perror("Error: Invalid parameter name\n");
+		printf("Error: Invalid parameter name\n");
 		exit(EXIT_FAILURE);
 	}
 
 	// Get char array of parameter value
 	param_value = strtok(NULL, "\0");
 	if (param_value == NULL) {
-		perror("Error: Invalid parameter value\n");
+		printf("Error: Invalid parameter value\n");
 		exit(EXIT_FAILURE);
 	}
 

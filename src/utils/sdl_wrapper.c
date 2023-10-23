@@ -57,7 +57,7 @@ void init_sdl() {
 			delta_time = 1.0;
 		}
 		fps = 1 / delta_time;
-		printf("FPS: %.2f\n", fps);
+//		printf("FPS: %.2f\n", fps);
 	}
 
 	// Event loop and cleanup code will also go here.

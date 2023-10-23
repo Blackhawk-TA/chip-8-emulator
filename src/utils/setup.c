@@ -10,7 +10,7 @@
 void load_rom_file(char* path) {
 	FILE *file = fopen(path, "rb");
 	if (file == NULL) {
-		perror("Error: Cannot open file");
+		printf("Error: Cannot open file");
 		exit(EXIT_FAILURE);
 	}
 	fseek(file, 0, SEEK_END);
@@ -20,7 +20,7 @@ void load_rom_file(char* path) {
 	u_int8_t *buffer = (u_int8_t*) malloc(file_size);
 	size_t bytes_read = fread(buffer, 1, file_size, file);
 	if (bytes_read != file_size) {
-		perror("Error: Unable to memory_read file");
+		printf("Error: Unable to memory_read file");
 		exit(EXIT_FAILURE);
 	}
 	fclose(file);
