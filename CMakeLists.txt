@@ -13,7 +13,9 @@ add_executable(chip_8_emulator main.c
         src/utils/sdl_wrapper.c
         src/utils/sdl_wrapper.h
         src/components/display.c
-        src/components/display.h)
+        src/components/display.h
+        src/components/stack.c
+        src/components/stack.h)
 
 find_package(SDL2 REQUIRED)
 target_link_libraries(chip_8_emulator PRIVATE SDL2::SDL2)
