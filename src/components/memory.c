@@ -9,7 +9,6 @@
 u_int8_t memory[4096];
 const u_int16_t last_memory_addr = 4095;
 
-
 u_int8_t memory_read(u_int16_t address) {
 	if (address > last_memory_addr) {
 		perror("Error: Tried reading invalid memory address\n");

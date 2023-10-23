@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "src/setup.h"
-#include "src/utils.h"
+#include "src/utils/setup.h"
+#include "src/utils/utils.h"
 
 int main(int argc, char **argv) {
 	if (argc != 2) {

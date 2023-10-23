@@ -3,7 +3,7 @@
 //
 
 #include "setup.h"
-#include "memory.h"
+#include "../components/memory.h"
 #include <stdio.h>
 #include <stdlib.h>
 
