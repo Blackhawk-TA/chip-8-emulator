@@ -7,8 +7,9 @@
 
 #include <stdlib.h>
 
-void set_delay_timer(u_int8_t value);
-u_int8_t get_delay_timer();
+extern u_int8_t delay_timer;
+extern u_int8_t sound_timer;
+
 void delay_timer_run();
 void sound_timer_run();
 
