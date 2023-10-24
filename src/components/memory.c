@@ -7,6 +7,8 @@
 #include "memory.h"
 
 u_int16_t program_counter = 0;
+u_int16_t index_register = 0;
+
 static u_int8_t memory[4096];
 static const u_int16_t LAST_MEMORY_ADDR = 4095;
 
