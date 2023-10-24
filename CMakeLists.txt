@@ -15,7 +15,11 @@ add_executable(chip_8_emulator main.c
         src/components/display.c
         src/components/display.h
         src/components/stack.c
-        src/components/stack.h)
+        src/components/stack.h
+        src/components/timer.c
+        src/components/timer.h
+        src/sdl/renderer.c
+        src/sdl/renderer.h)
 
 find_package(SDL2 REQUIRED)
 target_link_libraries(chip_8_emulator PRIVATE SDL2::SDL2)

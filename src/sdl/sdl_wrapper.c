@@ -3,6 +3,8 @@
 //
 
 #include "sdl_wrapper.h"
+#include "../components/timer.h"
+#include "renderer.h"
 
 static const uint8_t SCALE = 10;
 static const uint32_t TICK_INTERVAL = 16;
@@ -39,9 +41,7 @@ void init_sdl() {
 			}
 		}
 
-		// Additional rendering or game logic can go here.
-		draw_px(renderer, 1, 1);
-		draw_px(renderer, 2, 1);
+		render_loop(renderer);
 
 		SDL_RenderPresent(renderer);
 
@@ -57,7 +57,7 @@ void init_sdl() {
 			delta_time = 1.0;
 		}
 		fps = 1 / delta_time;
-//		printf("FPS: %.2f\n", fps);
+		// printf("FPS: %.2f\n", fps);
 	}
 
 	// Event loop and cleanup code will also go here.
