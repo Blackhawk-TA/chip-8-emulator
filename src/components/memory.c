@@ -12,6 +12,15 @@ u_int16_t index_register = 0;
 static u_int8_t memory[4096];
 static const u_int16_t LAST_MEMORY_ADDR = 4095;
 
+void init_memory() {
+	program_counter = 0;
+	index_register = 0;
+
+	for (int i = 0; i < sizeof(memory)/sizeof(memory[0]); i++) {
+		memory[i] = 0;
+	}
+}
+
 u_int8_t memory_read(u_int16_t address) {
 	if (address > LAST_MEMORY_ADDR) {
 		printf("Error: Tried reading invalid memory address\n");

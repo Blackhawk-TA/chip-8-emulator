@@ -4,6 +4,7 @@
 #include "src/utils/utils.h"
 #include "src/sdl/sdl_wrapper.h"
 #include "src/components/stack.h"
+#include "src/components/memory.h"
 
 int main(int argc, char **argv) {
 	// Get cli parameter for ROM path
@@ -13,12 +14,15 @@ int main(int argc, char **argv) {
 	}
 	char *rom_path = get_path_from_parameter(argv);
 
+	// Init emulator components
+	init_memory();
+	init_stack();
+
 	// Setup emulator memory
 	load_font();
 	load_rom_file(rom_path);
-	init_stack();
 
-	// Setup SDL
+	// Setup SDL rendering. Should be run as last because it runs a loop and blocks all following commands.
 	init_sdl();
 
 	return 0;
