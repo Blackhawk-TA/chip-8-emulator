@@ -31,7 +31,7 @@ char* get_path_from_parameter(char **argv) {
 	return param_value;
 }
 
-u_int64_t get_time_ns() {
+uint64_t get_time_ns() {
 	struct timespec ts;
 
 	if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {

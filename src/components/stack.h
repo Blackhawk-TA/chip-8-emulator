@@ -5,10 +5,10 @@
 #ifndef CHIP_8_EMULATOR_STACK_H
 #define CHIP_8_EMULATOR_STACK_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
 void init_stack();
-void stack_push(u_int8_t value);
-u_int16_t stack_pop();
+void stack_push(uint8_t value);
+uint16_t stack_pop();
 
 #endif //CHIP_8_EMULATOR_STACK_H

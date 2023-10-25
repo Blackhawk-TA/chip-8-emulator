@@ -2,10 +2,10 @@
 // Created by daniel on 23.10.23.
 //
 
-#include "setup.h"
-#include "../components/memory.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "setup.h"
+#include "../components/memory.h"
 
 void load_rom_file(char* path) {
 	FILE *file = fopen(path, "rb");
@@ -17,7 +17,7 @@ void load_rom_file(char* path) {
 	long file_size = ftell(file);
 	rewind(file);
 
-	u_int8_t *buffer = (u_int8_t*) malloc(file_size);
+	uint8_t *buffer = (uint8_t*) malloc(file_size);
 	size_t bytes_read = fread(buffer, 1, file_size, file);
 	if (bytes_read != file_size) {
 		printf("Error: Unable to memory_read file");
@@ -25,7 +25,7 @@ void load_rom_file(char* path) {
 	}
 	fclose(file);
 
-	const u_int16_t rom_start_addr = 0x200;
+	const uint16_t rom_start_addr = 0x200;
 	for (int i = 0; i < file_size; i++) {
 		memory_write(rom_start_addr + i, buffer[i]);
 	}
@@ -34,9 +34,9 @@ void load_rom_file(char* path) {
 }
 
 void load_font() {
-	const u_int16_t font_start_addr = 0x50;
-	const u_int16_t font_char_count = 80;
-	const u_int16_t font[80] = {
+	const uint16_t font_start_addr = 0x50;
+	const uint16_t font_char_count = 80;
+	const uint16_t font[80] = {
 			0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 			0x20, 0x60, 0x20, 0x20, 0x70, // 1
 			0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -56,7 +56,7 @@ void load_font() {
 	};
 
 	// Font is stored in address range: 0x050 - 0x09F
-	for (u_int16_t i = 0; i < font_char_count; i++) {
+	for (uint16_t i = 0; i < font_char_count; i++) {
 		memory_write(font_start_addr + i, font[i]);
 	}
 }

@@ -6,11 +6,11 @@
 #include <stdlib.h>
 #include "memory.h"
 
-u_int16_t program_counter = 0;
-u_int16_t index_register = 0;
+uint16_t program_counter = 0;
+uint16_t index_register = 0;
 
-static u_int8_t memory[4096];
-static const u_int16_t LAST_MEMORY_ADDR = 4095;
+static uint8_t memory[4096];
+static const uint16_t LAST_MEMORY_ADDR = 4095;
 
 void init_memory() {
 	program_counter = 0;
@@ -21,7 +21,7 @@ void init_memory() {
 	}
 }
 
-u_int8_t memory_read(u_int16_t address) {
+uint8_t memory_read(uint16_t address) {
 	if (address > LAST_MEMORY_ADDR) {
 		printf("Error: Tried reading invalid memory address\n");
 		exit(EXIT_FAILURE);
@@ -30,7 +30,7 @@ u_int8_t memory_read(u_int16_t address) {
 	return memory[address];
 }
 
-void memory_write(u_int16_t address, u_int8_t value) {
+void memory_write(uint16_t address, uint8_t value) {
 	if (address > LAST_MEMORY_ADDR) {
 		printf("Error: Tried writing to invalid memory address\n");
 		exit(EXIT_FAILURE);

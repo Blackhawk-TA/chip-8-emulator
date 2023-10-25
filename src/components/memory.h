@@ -6,13 +6,13 @@
 #define CHIP_8_EMULATOR_MEMORY_H
 
 #include "../utils/utils.h"
-#include <stdlib.h>
+#include <stdint.h>
 
-extern u_int16_t program_counter; // Points at the current instruction in memory
-extern u_int16_t index_register; // Points at locations in memory
+extern uint16_t program_counter; // Points at the current instruction in memory
+extern uint16_t index_register; // Points at locations in memory
 
 void init_memory();
-u_int8_t memory_read(u_int16_t address);
-void memory_write(u_int16_t address, u_int8_t value);
+uint8_t memory_read(uint16_t address);
+void memory_write(uint16_t address, uint8_t value);
 
 #endif //CHIP_8_EMULATOR_MEMORY_H

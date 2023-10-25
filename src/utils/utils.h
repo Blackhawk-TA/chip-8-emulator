@@ -5,7 +5,7 @@
 #ifndef CHIP_8_EMULATOR_UTILS_H
 #define CHIP_8_EMULATOR_UTILS_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
 /**
  * Gets the value of the input parameter "--rom" which is the path to the ROM on the filesystem
@@ -14,6 +14,6 @@
  */
 char* get_path_from_parameter(char **argv);
 
-u_int64_t get_time_ns();
+uint64_t get_time_ns();
 
 #endif //CHIP_8_EMULATOR_UTILS_H

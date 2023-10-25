@@ -5,10 +5,10 @@
 #ifndef CHIP_8_EMULATOR_TIMER_H
 #define CHIP_8_EMULATOR_TIMER_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
-extern u_int8_t delay_timer;
-extern u_int8_t sound_timer;
+extern uint8_t delay_timer;
+extern uint8_t sound_timer;
 
 void delay_timer_run();
 void sound_timer_run();

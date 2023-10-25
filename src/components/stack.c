@@ -3,9 +3,10 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "stack.h"
 
-static u_int16_t stack[16]; // Only used to store memory addresses
+static uint16_t stack[16]; // Only used to store memory addresses
 static int8_t stack_ptr;
 
 void init_stack() {
@@ -16,7 +17,7 @@ void init_stack() {
 	}
 }
 
-void stack_push(u_int8_t value) {
+void stack_push(uint8_t value) {
 	stack_ptr++;
 
 	if (stack_ptr > sizeof(stack) / sizeof(stack[0]) - 1) {
@@ -26,8 +27,8 @@ void stack_push(u_int8_t value) {
 	stack[stack_ptr] = value;
 }
 
-u_int16_t stack_pop() {
-	u_int16_t value = stack[stack_ptr];
+uint16_t stack_pop() {
+	uint16_t value = stack[stack_ptr];
 	stack[stack_ptr] = 0;
 
 	if (stack_ptr == -1) {

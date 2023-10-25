@@ -3,7 +3,6 @@
 //
 
 #include "sdl_wrapper.h"
-#include "../components/timer.h"
 #include "../components/cpu.h"
 #include "renderer.h"
 #include "../utils/utils.h"

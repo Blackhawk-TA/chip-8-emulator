@@ -4,8 +4,8 @@
 
 #include "timer.h"
 
-u_int8_t delay_timer = 60;
-u_int8_t sound_timer = 60;
+uint8_t delay_timer = 60;
+uint8_t sound_timer = 60;
 
 void delay_timer_run() {
 	if (delay_timer > 0) {
