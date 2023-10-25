@@ -13,7 +13,7 @@ static uint8_t memory[4096];
 static const uint16_t LAST_MEMORY_ADDR = 4095;
 
 void init_memory() {
-	program_counter = 0;
+	program_counter = 0x200; // The address at which the ROM starts
 	index_register = 0;
 
 	for (int i = 0; i < sizeof(memory)/sizeof(memory[0]); i++) {
