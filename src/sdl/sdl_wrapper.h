@@ -13,13 +13,6 @@
 void init_sdl();
 
 /**
- * Check how much time is left until the next render iteration is started.
- * Used to limit the framerate.
- * @return The time left for the next render iteration in ms
- */
-uint32_t time_left();
-
-/**
  * Draws a pixel on the screen on the given position.
  * Scales it up 10x for better visibility, because CHIP-8 has only a 64x32 screen.
  * @param renderer The SDL renderer

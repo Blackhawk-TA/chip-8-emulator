@@ -4,11 +4,13 @@
 
 #include "sdl_wrapper.h"
 #include "../components/timer.h"
+#include "../components/cpu.h"
 #include "renderer.h"
+#include "../utils/utils.h"
 
 static const uint8_t SCALE = 10;
-static const uint32_t TICK_INTERVAL = 16;
-static uint32_t next_time;
+const uint64_t ONE_NANOSECOND = 1000000000;
+uint8_t MAX_FPS = 60;
 
 void init_sdl() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -27,52 +29,57 @@ void init_sdl() {
 
 	SDL_Event event;
 	int quit = 0;
-	next_time = SDL_GetTicks64() + TICK_INTERVAL;
 
-	uint32_t start_time, current_time;
-	double delta_time, fps;
+	uint64_t last_fps_time = get_time_ns();
+	uint64_t last_cpu_time = get_time_ns();
+	uint64_t counter = 0;
+	uint64_t current_time;
+	float delta_time, fps;
 
 	while (!quit) {
-		start_time = SDL_GetTicks64();
-
+		// TODO: This messes with the loop speed
+		// Handle interruption
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				quit = 1;
 			}
 		}
 
-		render_loop(renderer);
+		current_time = get_time_ns();
 
+		// Handle CPU cycles
+		if (current_time - last_cpu_time >= ONE_NANOSECOND / CLOCK_SPEED_HZ) {
+			counter++;
+			cpu_cycle();
+		}
+		last_cpu_time = get_time_ns();
+
+		// Limit FPS for render loop
+		if (current_time - last_fps_time < ONE_NANOSECOND / MAX_FPS) {
+			continue;
+		}
+		printf("%lu\n", counter);
+		counter = 0;
+
+		render_loop(renderer);
 		SDL_RenderPresent(renderer);
 
-		// Limit framerate
-		SDL_Delay(time_left());
-		next_time += TICK_INTERVAL;
-
 		// Calculate FPS
-		current_time = SDL_GetTicks64();
-		delta_time = (double)(current_time - start_time) / 1000.0f;
-
-		if (delta_time == 0.0) {
-			delta_time = 1.0;
+		delta_time = (float)(current_time - last_fps_time);
+		if (delta_time == 0.0) { // Prevent division by 0
+			delta_time = 1.0f;
 		}
-		fps = 1 / delta_time;
-		// printf("FPS: %.2f\n", fps);
+		fps = (float)ONE_NANOSECOND / delta_time;
+		printf("FPS: %.2f\n", fps);
+
+		// Update last_ticks for next iteration
+		last_fps_time = get_time_ns();
 	}
 
 	// Event loop and cleanup code will also go here.
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-}
-
-uint32_t time_left() {
-	uint32_t now = SDL_GetTicks64();
-
-	if (next_time <= now) {
-		return 0;
-	}
-	return next_time - now;
 }
 
 void draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y) {

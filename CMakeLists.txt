@@ -19,7 +19,11 @@ add_executable(chip_8_emulator main.c
         src/components/timer.c
         src/components/timer.h
         src/sdl/renderer.c
-        src/sdl/renderer.h)
+        src/sdl/renderer.h
+        src/components/keypad.c
+        src/components/keypad.h
+        src/components/cpu.c
+        src/components/cpu.h)
 
 find_package(SDL2 REQUIRED)
 target_link_libraries(chip_8_emulator PRIVATE SDL2::SDL2)
