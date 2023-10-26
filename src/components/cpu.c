@@ -7,6 +7,7 @@
 #include "cpu.h"
 #include "memory.h"
 #include "display.h"
+#include "stack.h"
 
 uint32_t CLOCK_SPEED_HZ = 1000000; // 1 MHz //TODO change, so it is variable.
 
@@ -42,6 +43,7 @@ void decode_and_execute(uint16_t instruction) {
 	uint16_t nn = instruction & 0x00FF;
 	uint16_t nnn = instruction & 0x0FFF;
 
+	//TODO think about incrementing PC in fetch again...
 	switch (opcode) {
 		case 0x0:
 			switch (instruction) {
@@ -50,21 +52,36 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x00EE: // Subroutine return
+					program_counter = stack_pop();
 					break;
 				default:
 					unknown_instruction(opcode);
 			}
 			break;
 		case 0x1: // 1NNN: Jump, no PC increment
-			program_counter = nnn; //TODO: check if this is correct or if PC should be reset.
+			program_counter = nnn;
 			break;
-		case 0x2:
+		case 0x2: // 2NNN: Jump to subroutine
+			stack_push(program_counter);
+			program_counter = nnn;
 			break;
-		case 0x3:
+		case 0x3: // 3XNN: Skips one instruction if VX equals NN
+			if (registers[x] == nn) {
+				program_counter += 2;
+			}
+			program_counter += 2;
 			break;
-		case 0x4:
+		case 0x4: // 4XNN: Skips one instruction if VX does not equal NN
+			if (registers[x] != nn) {
+				program_counter += 2;
+			}
+			program_counter += 2;
 			break;
-		case 0x5:
+		case 0x5: // 5XY0: Skips if VX and VY are equal
+			if (registers[x] == registers[y]) {
+				program_counter += 2;
+			}
+			program_counter += 2;
 			break;
 		case 0x6: // 6XNN: Set register VX to value NN
 			registers[x] = nn;
@@ -76,7 +93,11 @@ void decode_and_execute(uint16_t instruction) {
 			break;
 		case 0x8:
 			break;
-		case 0x9:
+		case 0x9: // 9XY0: Skips if VX and VY are not equal
+			if (registers[x] != registers[y]) {
+				program_counter += 2;
+			}
+			program_counter += 2;
 			break;
 		case 0xA: // ANNN: Sets index register to NNN
 			index_register = nnn;
