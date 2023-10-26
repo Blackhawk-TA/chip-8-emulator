@@ -10,6 +10,8 @@
 
 extern uint16_t program_counter; // Points at the current instruction in memory
 extern uint16_t index_register; // Points at locations in memory
+extern uint16_t registers[16]; //The CPU registers V0 - VF
+extern uint16_t carry_flag_register;
 
 void init_memory();
 uint8_t memory_read(uint16_t address);

@@ -8,9 +8,7 @@
 #include "memory.h"
 #include "display.h"
 
-uint32_t CLOCK_SPEED_HZ = 1000000; // 1 MHz
-uint16_t registers[16] = {}; //The CPU registers V0 - VF
-uint16_t carry_flag_register = 0;
+uint32_t CLOCK_SPEED_HZ = 1000000; // 1 MHz //TODO change, so it is variable.
 
 //TODO: It should handle around 700 instructions (cpu cycles) per second
 void cpu_cycle() {
