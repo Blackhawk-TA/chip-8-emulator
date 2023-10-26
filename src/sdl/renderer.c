@@ -5,13 +5,19 @@
 #include "renderer.h"
 #include "sdl_wrapper.h"
 #include "../components/timer.h"
+#include "../components/display.h"
 
 void render_loop(SDL_Renderer *renderer) {
 	// Update timers
 	delay_timer_run();
 	sound_timer_run();
 
-	// Render pixels for testing
-	draw_px(renderer, 1, 1);
-	draw_px(renderer, 2, 1);
+	// Render pixels of the entire display
+	for (int x = 0; x < WIDTH; x++) {
+		for (int y = 0; y < HEIGHT; y++) {
+			if (display[x][y]) {
+				draw_px(renderer, x, y);
+			}
+		}
+	}
 }

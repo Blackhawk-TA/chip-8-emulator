@@ -3,13 +3,14 @@
 //
 
 #include "sdl_wrapper.h"
-#include "../components/cpu.h"
 #include "renderer.h"
+#include "../components/cpu.h"
 #include "../utils/utils.h"
+#include "../components/display.h"
 
 static const uint8_t SCALE = 10;
-const uint64_t ONE_NANOSECOND = 1000000000;
-uint8_t MAX_FPS = 60;
+static const uint64_t ONE_NANOSECOND = 1000000000;
+static uint8_t MAX_FPS = 60;
 
 void init_sdl() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -17,13 +18,13 @@ void init_sdl() {
 		exit(EXIT_FAILURE);
 	}
 
-	SDL_Window* window = SDL_CreateWindow("CHIP-8 Emulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 320, SDL_WINDOW_SHOWN);
+	SDL_Window *window = SDL_CreateWindow("CHIP-8 Emulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH * SCALE, HEIGHT * SCALE, SDL_WINDOW_SHOWN);
 	if (!window) {
 		printf("Window creation failed: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Set to color to white => monochrome display
 
 	SDL_Event event;
