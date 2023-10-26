@@ -82,7 +82,7 @@ void init_sdl() {
 	SDL_Quit();
 }
 
-void draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y) {
+void sdl_draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y) {
 	SDL_Rect rect = {x * SCALE, y * SCALE, 1 * SCALE, 1 * SCALE};
 	SDL_RenderFillRect(renderer, &rect);
 }

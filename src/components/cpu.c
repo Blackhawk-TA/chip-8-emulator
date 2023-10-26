@@ -12,9 +12,8 @@ uint32_t CLOCK_SPEED_HZ = 1000000; // 1 MHz
 uint16_t registers[16] = {}; //The CPU registers V0 - VF
 uint16_t carry_flag_register = 0;
 
-//TODO: It should handle around 700 instructions per second
+//TODO: It should handle around 700 instructions (cpu cycles) per second
 void cpu_cycle() {
-
 	uint16_t instruction = fetch();
 	decode_and_execute(instruction);
 }
@@ -47,6 +46,7 @@ void decode_and_execute(uint16_t instruction) {
 		case 0x0:
 			switch (instruction) {
 				case 0x00E0: // Clear display
+					clear_display();
 					break;
 				case 0x00EE: // Subroutine return
 					break;

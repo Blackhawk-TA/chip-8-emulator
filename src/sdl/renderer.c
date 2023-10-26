@@ -16,7 +16,7 @@ void render_loop(SDL_Renderer *renderer) {
 	for (int x = 0; x < WIDTH; x++) {
 		for (int y = 0; y < HEIGHT; y++) {
 			if (display[x][y]) {
-				draw_px(renderer, x, y);
+				sdl_draw_px(renderer, x, y);
 			}
 		}
 	}

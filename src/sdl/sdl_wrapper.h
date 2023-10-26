@@ -19,6 +19,6 @@ void init_sdl();
  * @param x The x position of the pixel
  * @param y The y position of the pixel
  */
-void draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y);
+void sdl_draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y);
 
 #endif //CHIP_8_EMULATOR_SDL_WRAPPER_H
