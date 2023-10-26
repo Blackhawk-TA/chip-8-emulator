@@ -83,7 +83,7 @@ void decode_and_execute(uint16_t instruction) {
 			break;
 		case 0xC:
 			break;
-		case 0xD: // DXYN: Draw n pixels at x,y
+		case 0xD: // DXYN: Draw n pixels at x, y
 			draw(registers[x] % WIDTH, registers[y] % HEIGHT, n);
 			break;
 		case 0xE:

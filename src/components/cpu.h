@@ -9,6 +9,9 @@
 
 extern uint32_t CLOCK_SPEED_HZ;
 
+/**
+ * Fetches, decodes and executes the instruction at which the program counter points.
+ */
 void cpu_cycle();
 
 /**
@@ -18,6 +21,10 @@ void cpu_cycle();
  */
 uint16_t fetch();
 
+/**
+ * Decodes the instruction into its individual parts and executes it.
+ * @param instruction The 16bit instruction value
+ */
 void decode_and_execute(uint16_t instruction);
 
 #endif //CHIP_8_EMULATOR_CPU_H

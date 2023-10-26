@@ -14,6 +14,10 @@
  */
 char* get_path_from_parameter(char **argv);
 
+/**
+ * Gets the current unix time in nanoseconds.
+ * @return The unix time in ns
+ */
 uint64_t get_time_ns();
 
 #endif //CHIP_8_EMULATOR_UTILS_H
