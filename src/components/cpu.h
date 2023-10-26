@@ -27,4 +27,10 @@ uint16_t fetch();
  */
 void decode_and_execute(uint16_t instruction);
 
+/**
+ * Handles an unknown instruction by printing an error message and existing.
+ * @param instruction The instruction hex value which is unknown
+ */
+void unknown_instruction(uint16_t instruction);
+
 #endif //CHIP_8_EMULATOR_CPU_H

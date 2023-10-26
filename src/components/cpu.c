@@ -26,6 +26,8 @@ uint16_t fetch() {
 	return instruction;
 }
 
+// TODO: make sure the program_counter is incremented correctly for each instruction.
+//  currently it is always incremented on fetching from memory.
 void decode_and_execute(uint16_t instruction) {
 	/*
 	 * The instruction consists of 4 parts. The first one is the opcode.
@@ -35,14 +37,14 @@ void decode_and_execute(uint16_t instruction) {
 	 * NN: The second byte (third and fourth parts). An 8-bit immediate number.
 	 * NNN: The second, third and fourth parts. A 12-bit immediate memory address.
 	 */
-	uint16_t op_code = (instruction & 0xF000) >> 12;
+	uint16_t opcode = (instruction & 0xF000) >> 12;
 	uint16_t x = (instruction & 0x0F00) >> 8;
 	uint16_t y = (instruction & 0x00F0) >> 4;
 	uint16_t n = instruction & 0x000F;
 	uint16_t nn = instruction & 0x00FF;
 	uint16_t nnn = instruction & 0x0FFF;
 
-	switch (op_code) {
+	switch (opcode) {
 		case 0x0:
 			switch (instruction) {
 				case 0x00E0: // Clear display
@@ -51,8 +53,7 @@ void decode_and_execute(uint16_t instruction) {
 				case 0x00EE: // Subroutine return
 					break;
 				default:
-					printf("Error: Unknown instruction identifier");
-					exit(EXIT_FAILURE);
+					unknown_instruction(opcode);
 			}
 			break;
 		case 0x1: // 1NNN: Jump
@@ -91,7 +92,11 @@ void decode_and_execute(uint16_t instruction) {
 		case 0xF:
 			break;
 		default:
-			printf("Error: Unknown instruction identifier");
-			exit(EXIT_FAILURE);
+			unknown_instruction(opcode);
 	}
+}
+
+void unknown_instruction(uint16_t instruction) {
+	printf("Error: Unknown instruction '0x%04x'\n", instruction);
+	exit(EXIT_FAILURE);
 }
