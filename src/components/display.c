@@ -7,9 +7,7 @@
 
 #define BYTE_LENGTH 8
 
-const uint8_t WIDTH = 64;
-const uint8_t HEIGHT = 32;
-uint8_t display[64][32] = {}; // TODO: Can also be done without 2D array.
+uint8_t display[WIDTH][HEIGHT] = {}; // TODO: Can also be done without 2D array.
 
 void draw(uint8_t x, uint8_t y, uint8_t n) {
 	uint8_t px_byte, px_bit;

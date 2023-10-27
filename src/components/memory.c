@@ -6,13 +6,14 @@
 #include <stdlib.h>
 #include "memory.h"
 
+#define LAST_MEMORY_ADDR 4095
+
 // TODO: think about renaming them to PC, I and V
 uint16_t program_counter = 0;
 uint16_t index_register = 0;
 uint8_t registers[16];
 
 static uint8_t memory[4096];
-static const uint16_t LAST_MEMORY_ADDR = 4095;
 
 void init_memory() {
 	program_counter = ROM_START_ADDR;
