@@ -52,6 +52,7 @@ void decode_and_execute(uint16_t instruction) {
 					break;
 				case 0x00EE: // Subroutine return
 					program_counter = stack_pop();
+					program_counter += 2;
 					break;
 				default:
 					unknown_instruction(opcode);
