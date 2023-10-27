@@ -130,6 +130,7 @@ void decode_and_execute(uint16_t instruction) {
 					registers[x] = registers[y]; // TODO: Might cause problems
 					registers[0xF] = registers[x] & 0b1; // Set the bit that was shifted out to carry flag
 					registers[x] >>= 1;
+					program_counter += 2;
 					break;
 				case 0x7: // 8XY7: Subtract sets VX to result of VY - VX
 					if (registers[y] > registers[x]) { // TODO: Not sure if implemented correctly, what about == ?
@@ -144,6 +145,7 @@ void decode_and_execute(uint16_t instruction) {
 					registers[x] = registers[y]; // TODO: Might cause problems
 					registers[0xF] = (registers[x] >> 7) & 0b1; // Set the bit that was shifted out to carry flag
 					registers[x] <<= 1;
+					program_counter += 2;
 					break;
 				default:
 					unknown_instruction(instruction);
