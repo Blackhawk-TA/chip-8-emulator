@@ -6,7 +6,7 @@
 
 static uint8_t key_status[16] = {};
 
-uint8_t is_pressed(uint8_t key) {
+uint8_t is_key_pressed(uint8_t key) {
 	return key_status[key];
 }
 

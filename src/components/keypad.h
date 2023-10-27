@@ -12,7 +12,7 @@
  * @param key The name of the key, which is a hex value from 0 - F
  * @return Returns 1 if key is pressed, otherwise 0
  */
-uint8_t is_pressed(uint8_t key);
+uint8_t is_key_pressed(uint8_t key);
 
 /**
  * Updates the status of the given key.

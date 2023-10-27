@@ -172,13 +172,13 @@ void decode_and_execute(uint16_t instruction) {
 		case 0xE:
 			switch (nn) {
 				case 0x9E: // EX9E: Skip one instruction if key corresponding to value in VX is pressed
-					if (is_pressed(registers[x])) {
+					if (is_key_pressed(registers[x])) {
 						program_counter += 2;
 					}
 					program_counter += 2;
 					break;
 				case 0xA1: // EXA1: Skip one instruction if key corresponding to value in VX is not pressed
-					if (!is_pressed(registers[x])) {
+					if (!is_key_pressed(registers[x])) {
 						program_counter += 2;
 					}
 					program_counter += 2;
