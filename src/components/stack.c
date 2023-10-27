@@ -21,7 +21,7 @@ void stack_push(uint8_t value) {
 	stack_ptr++;
 
 	if (stack_ptr > sizeof(stack) / sizeof(stack[0]) - 1) {
-		printf("Error: Stack overflow");
+		printf("Error: Stack overflow\n");
 		exit(EXIT_FAILURE);
 	}
 	stack[stack_ptr] = value;
@@ -32,7 +32,7 @@ uint16_t stack_pop() {
 	stack[stack_ptr] = 0;
 
 	if (stack_ptr == -1) {
-		printf("Error: Tried accessing empty stack");
+		printf("Error: Tried accessing empty stack\n");
 		exit(EXIT_FAILURE);
 	}
 	stack_ptr--;
