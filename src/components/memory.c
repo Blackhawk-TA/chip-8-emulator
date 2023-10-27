@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include "memory.h"
 
+// TODO: think about renaming them to PC, I and V
 uint16_t program_counter = 0;
 uint16_t index_register = 0;
-uint16_t registers[16]; //TODO should be 8bit and rename to "v"
+uint8_t registers[16];
 
 static uint8_t memory[4096];
 static const uint16_t LAST_MEMORY_ADDR = 4095;
