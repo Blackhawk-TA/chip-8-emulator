@@ -7,6 +7,7 @@
 #include "../components/cpu.h"
 #include "../utils/utils.h"
 #include "../components/display.h"
+#include "../components/keypad.h"
 
 static const uint8_t SCALE = 10;
 static const uint64_t ONE_NANOSECOND = 1000000000;
@@ -37,11 +38,18 @@ void init_sdl() {
 	float delta_time, fps;
 
 	while (!quit) {
-		// TODO: This messes with the loop speed
 		// Handle interruption
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				quit = 1;
+			switch (event.type) {
+				case SDL_QUIT:
+					quit = 1;
+					break;
+				case SDL_KEYDOWN:
+					update_key_status(event.key.keysym.scancode, 1);
+					break;
+				case SDL_KEYUP:
+					update_key_status(event.key.keysym.scancode, 0);
+					break;
 			}
 		}
 
