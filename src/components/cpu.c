@@ -223,9 +223,9 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x33: // FX33: Binary-coded decimal conversion
-					memory_write(index_register++, (registers[x] / 100) % 10); //TODO not sure if I should be incremented
-					memory_write(index_register++, (registers[x] / 10) % 10);
-					memory_write(index_register++, registers[x] % 10);
+					memory_write(index_register, (registers[x] / 100) % 10);
+					memory_write(index_register + 1, (registers[x] / 10) % 10);
+					memory_write(index_register + 2, registers[x] % 10);
 					program_counter += 2;
 					break;
 				case 0x55: // FX55: Store memory
