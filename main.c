@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "src/utils/setup.h"
 #include "src/utils/utils.h"
 #include "src/sdl/sdl_wrapper.h"
@@ -13,6 +14,9 @@ int main(int argc, char **argv) { //TODO: Maybe add parameter for cpu clock spee
 		exit(EXIT_FAILURE);
 	}
 	char *rom_path = get_path_from_parameter(argv);
+
+	// Seed random number
+	srand(time(NULL));
 
 	// Init emulator components
 	init_memory();
