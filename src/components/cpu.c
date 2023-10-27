@@ -52,7 +52,6 @@ void decode_and_execute(uint16_t instruction) {
 					break;
 				case 0x00EE: // Subroutine return
 					program_counter = stack_pop();
-					program_counter += 2;
 					break;
 				default:
 					unknown_instruction(opcode);
@@ -62,7 +61,7 @@ void decode_and_execute(uint16_t instruction) {
 			program_counter = nnn;
 			break;
 		case 0x2: // 2NNN: Jump to subroutine
-			stack_push(program_counter);
+			stack_push(program_counter + 2); // Increment by 2, so it does not get stuck on the Jump instruction
 			program_counter = nnn;
 			break;
 		case 0x3: // 3XNN: Skips one instruction if VX equals NN
@@ -110,35 +109,22 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x4: // 8XY4: Add VX is set to VX + VY, affects carry flag
-					if (registers[x] + registers[y] > 255) {
-						registers[0xF] = 1; // Set flag register to 1 on 8 bit overflow
-					} else {
-						registers[0xF] = 0; // Set flag register to 0 on no overflow
-					}
+					registers[0xF] = registers[x] + registers[y] > 255; // Set flag register to 1 on 8 bit overflow
 					registers[x] += registers[y];
 					program_counter += 2;
 					break;
 				case 0x5: // 8XY5: Subtract sets VX to result of VX - VY
-					if (registers[x] > registers[y]) { // TODO: Not sure if implemented correctly, what about == ?
-						registers[0XF] = 1;
-					} else if (registers[x] < registers[y]) {
-						registers[0XF] = 0;
-					}
+					registers[0xF] = registers[x] >= registers[y];
 					registers[x] -= registers[y];
 					program_counter += 2;
 					break;
 				case 0x6: // 8XY6: Shift 1 bit right
-					registers[x] = registers[y]; // TODO: Might cause problems
 					registers[0xF] = registers[x] & 0b1; // Set the bit that was shifted out to carry flag
 					registers[x] >>= 1;
 					program_counter += 2;
 					break;
 				case 0x7: // 8XY7: Subtract sets VX to result of VY - VX
-					if (registers[y] > registers[x]) { // TODO: Not sure if implemented correctly, what about == ?
-						registers[0XF] = 1;
-					} else if (registers[y] < registers[x]) {
-						registers[0XF] = 0;
-					}
+					registers[0xF] = registers[y] > registers[x];
 					registers[x] = registers[y] - registers[x];
 					program_counter += 2;
 					break;
@@ -207,9 +193,7 @@ void decode_and_execute(uint16_t instruction) {
 					break;
 				case 0x1E: // FX1E: Adds value of VF to index register I
 					// Writing to VF is not part of original COSMAC VIP, however some games rely on it, so it is implemented.
-					if (index_register + registers[x] > 0xFFF) {
-						registers[0xF] = 1;
-					}
+					registers[0xF] = index_register + registers[x] > 0xFFF;
 					index_register += registers[x];
 					program_counter += 2;
 					break;
