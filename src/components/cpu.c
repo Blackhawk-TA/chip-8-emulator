@@ -124,7 +124,7 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x7: // 8XY7: Subtract sets VX to result of VY - VX
-					registers[0xF] = registers[y] > registers[x];
+					registers[0xF] = registers[y] >= registers[x];
 					registers[x] = registers[y] - registers[x];
 					program_counter += 2;
 					break;
