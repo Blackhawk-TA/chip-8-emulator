@@ -8,6 +8,7 @@
 #include "memory.h"
 #include "display.h"
 #include "stack.h"
+#include "keypad.h"
 
 uint32_t CLOCK_SPEED_HZ = 1000000; // 1 MHz //TODO change, so it is variable.
 
@@ -169,6 +170,22 @@ void decode_and_execute(uint16_t instruction) {
 			program_counter += 2;
 			break;
 		case 0xE:
+			switch (nn) {
+				case 0x9E: // EX9E: Skip one instruction if key corresponding to value in VX is pressed
+					if (is_pressed(registers[x])) {
+						program_counter += 2;
+					}
+					program_counter += 2;
+					break;
+				case 0xA1: // EXA1: Skip one instruction if key corresponding to value in VX is not pressed
+					if (!is_pressed(registers[x])) {
+						program_counter += 2;
+					}
+					program_counter += 2;
+					break;
+				default:
+					unknown_instruction(instruction);
+			}
 			break;
 		case 0xF:
 			break;
