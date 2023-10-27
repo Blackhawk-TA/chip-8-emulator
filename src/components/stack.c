@@ -17,7 +17,7 @@ void init_stack() {
 	}
 }
 
-void stack_push(uint8_t value) {
+void stack_push(uint16_t value) {
 	stack_ptr++;
 
 	if (stack_ptr > sizeof(stack) / sizeof(stack[0]) - 1) {
