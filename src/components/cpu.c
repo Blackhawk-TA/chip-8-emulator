@@ -9,6 +9,7 @@
 #include "display.h"
 #include "stack.h"
 #include "keypad.h"
+#include "timer.h"
 
 uint32_t CLOCK_SPEED_HZ = 1000000; // 1 MHz //TODO change, so it is variable.
 
@@ -93,7 +94,7 @@ void decode_and_execute(uint16_t instruction) {
 			switch (n) {
 				case 0x0: // 8XY0: Set VX to value of VY
 					registers[x] = registers[y];
-					program_counter +=2;
+					program_counter += 2;
 					break;
 				case 0x1: // 8XY1: Binary OR
 					registers[x] |= registers[y];
@@ -188,6 +189,58 @@ void decode_and_execute(uint16_t instruction) {
 			}
 			break;
 		case 0xF:
+			switch (nn) {
+				case 0x07: // FX07: Sets VX to current value of delay timer
+					registers[x] = delay_timer;
+					program_counter += 2;
+					break;
+				case 0x15: // FX15: Sets delay timer to value in VX
+					delay_timer = registers[x];
+					program_counter += 2;
+					break;
+				case 0x18: // FX18: Sets sound timer to value in VX
+					sound_timer = registers[x];
+					program_counter += 2;
+					break;
+				case 0x1E: // FX1E: Adds value of VF to index register I
+					// Writing to VF is not part of original COSMAC VIP, however some games rely on it, so it is implemented.
+					if (index_register + registers[x] > 0xFFF) {
+						registers[0xF] = 1;
+					}
+					index_register += registers[x];
+					program_counter += 2;
+					break;
+				case 0x0A: // FX0A: Wait until a key is pressed and writes the pressed key to VX
+					if (get_pressed_key()) { // TODO: Move to own function so get_pressed_key does not need to be called twice
+						registers[x] = get_pressed_key();
+						program_counter += 2;
+					}
+					break;
+				case 0x29: // FX29: Font character
+					index_register = FONT_START_ADDR + registers[x]; //TODO: Might not work, see docs
+					program_counter += 2;
+					break;
+				case 0x33: // FX33: Binary-coded decimal conversion
+					memory_write(index_register++, (registers[x] / 100) % 10); //TODO not sure if I should be incremented
+					memory_write(index_register++, (registers[x] / 10) % 10);
+					memory_write(index_register++, registers[x] % 10);
+					program_counter += 2;
+					break;
+				case 0x55: // FX55: Store memory
+					for (uint16_t i = 0; i <= x; i++) {
+						memory_write(index_register + i, registers[i]);
+					}
+					program_counter += 2;
+					break;
+				case 0x65: // FX65: Load memory
+					for (uint16_t i = 0; i <= x; i++) {
+						registers[i] = memory_read(index_register + i);
+					}
+					program_counter += 2;
+					break;
+				default:
+					unknown_instruction(instruction);
+			}
 			break;
 		default:
 			unknown_instruction(opcode);

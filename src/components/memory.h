@@ -8,6 +8,8 @@
 #include "../utils/utils.h"
 #include <stdint.h>
 
+#define FONT_START_ADDR 0x50
+
 extern uint16_t program_counter; // Points at the current instruction in memory
 extern uint16_t index_register; // Points at locations in memory
 extern uint8_t registers[16]; //The CPU registers V0 - VF TODO: error handling for wrong access

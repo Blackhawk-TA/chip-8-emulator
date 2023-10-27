@@ -34,7 +34,6 @@ void load_rom_file(char* path) {
 }
 
 void load_font() {
-	const uint16_t font_start_addr = 0x50;
 	const uint16_t font_char_count = 80;
 	const uint16_t font[80] = {
 			0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -57,6 +56,6 @@ void load_font() {
 
 	// Font is stored in address range: 0x050 - 0x09F
 	for (uint16_t i = 0; i < font_char_count; i++) {
-		memory_write(font_start_addr + i, font[i]);
+		memory_write(FONT_START_ADDR + i, font[i]);
 	}
 }

@@ -10,6 +10,20 @@ uint8_t is_key_pressed(uint8_t key) {
 	return key_status[key];
 }
 
+int8_t get_pressed_key() {
+	int8_t i = 0;
+	uint8_t is_pressed = 0;
+	int8_t key = -1;
+
+	while (is_pressed == 0 && i < sizeof(key_status) / sizeof(key_status[0])) {
+		is_pressed = key_status[i];
+		key = i;
+		i++;
+	}
+
+	return key;
+}
+
 void update_key_status(uint16_t scancode, uint8_t status) {
 	switch (scancode) { // Comments refer to QWERTZ keyboard layout
 		case 30: // Key: 1

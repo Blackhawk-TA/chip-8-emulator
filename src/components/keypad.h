@@ -15,6 +15,12 @@
 uint8_t is_key_pressed(uint8_t key);
 
 /**
+ * Checks if a key is pressed.
+ * @return Returns the key hex value 0-F if a key is pressed, otherwise return -1
+ */
+int8_t get_pressed_key();
+
+/**
  * Updates the status of the given key.
  * @param scancode The scancode of the key
  * @param status The status of the key. 1 if the key is pressed, 0 on key release
