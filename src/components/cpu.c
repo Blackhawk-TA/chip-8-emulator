@@ -220,7 +220,7 @@ void decode_and_execute(uint16_t instruction) {
 					}
 					break;
 				case 0x29: // FX29: Font character
-					index_register = FONT_START_ADDR + registers[x]; //TODO: Might not work, see docs
+					index_register = FONT_START_ADDR + FONT_BYTES_PER_CHAR * (registers[x] & 0x0F); // One char consists of 5 bytes
 					program_counter += 2;
 					break;
 				case 0x33: // FX33: Binary-coded decimal conversion

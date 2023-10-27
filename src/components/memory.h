@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #define FONT_START_ADDR 0x50
+#define FONT_BYTES_PER_CHAR 5
 #define ROM_START_ADDR 0x200
 
 extern uint16_t program_counter; // Points at the current instruction in memory
