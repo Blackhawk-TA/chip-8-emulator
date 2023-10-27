@@ -8,8 +8,7 @@
 
 uint16_t program_counter = 0;
 uint16_t index_register = 0;
-uint16_t registers[16];
-uint16_t carry_flag_register; //TODO: Not sure if this is needed
+uint16_t registers[16]; //TODO should be 8bit and rename to "v"
 
 static uint8_t memory[4096];
 static const uint16_t LAST_MEMORY_ADDR = 4095;
@@ -17,7 +16,6 @@ static const uint16_t LAST_MEMORY_ADDR = 4095;
 void init_memory() {
 	program_counter = 0x200; // The address at which the ROM starts
 	index_register = 0;
-	carry_flag_register = 0;
 
 	for (int i = 0; i < sizeof(registers)/sizeof(registers[0]); i++) {
 		registers[i] = 0;

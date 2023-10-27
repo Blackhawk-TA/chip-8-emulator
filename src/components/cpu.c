@@ -25,8 +25,6 @@ uint16_t fetch() {
 	return instruction;
 }
 
-// TODO: make sure the program_counter is incremented correctly for each instruction.
-//  currently it is always incremented on fetching from memory.
 void decode_and_execute(uint16_t instruction) {
 	/*
 	 * The instruction consists of 4 parts. The first one is the opcode.
@@ -43,7 +41,6 @@ void decode_and_execute(uint16_t instruction) {
 	uint16_t nn = instruction & 0x00FF;
 	uint16_t nnn = instruction & 0x0FFF;
 
-	//TODO think about incrementing PC in fetch again...
 	switch (opcode) {
 		case 0x0:
 			switch (instruction) {
@@ -91,7 +88,64 @@ void decode_and_execute(uint16_t instruction) {
 			registers[x] += nn;
 			program_counter += 2;
 			break;
-		case 0x8:
+		case 0x8: // Logical operators
+			switch (n) {
+				case 0x0: // 8XY0: Set VX to value of VY
+					registers[x] = registers[y];
+					program_counter +=2;
+					break;
+				case 0x1: // 8XY1: Binary OR
+					registers[x] |= registers[y];
+					program_counter += 2;
+					break;
+				case 0x2: // 8XY2: Binary AND
+					registers[x] &= registers[y];
+					program_counter += 2;
+					break;
+				case 0x3: // 8XY3: Binary XOR
+					registers[x] ^= registers[y];
+					program_counter += 2;
+					break;
+				case 0x4: // 8XY4: Add VX is set to VX + VY, affects carry flag
+					if (registers[x] + registers[y] > 255) {
+						registers[0xF] = 1; // Set flag register to 1 on 8 bit overflow
+					} else {
+						registers[0xF] = 0; // Set flag register to 0 on no overflow
+					}
+					registers[x] += registers[y];
+					program_counter += 2;
+					break;
+				case 0x5: // 8XY5: Subtract sets VX to result of VX - VY
+					if (registers[x] > registers[y]) { // TODO: Not sure if implemented correctly, what about == ?
+						registers[0XF] = 1;
+					} else if (registers[x] < registers[y]) {
+						registers[0XF] = 0;
+					}
+					registers[x] -= registers[y];
+					program_counter += 2;
+					break;
+				case 0x6: // 8XY6: Shift 1 bit right
+					registers[x] = registers[y]; // TODO: Might cause problems
+					registers[0xF] = registers[x] & 0b1; // Set the bit that was shifted out to carry flag
+					registers[x] >>= 1;
+					break;
+				case 0x7: // 8XY7: Subtract sets VX to result of VY - VX
+					if (registers[y] > registers[x]) { // TODO: Not sure if implemented correctly, what about == ?
+						registers[0XF] = 1;
+					} else if (registers[y] < registers[x]) {
+						registers[0XF] = 0;
+					}
+					registers[x] = registers[y] - registers[x];
+					program_counter += 2;
+					break;
+				case 0xE: // 8XYE: Shift 1 bit left
+					registers[x] = registers[y]; // TODO: Might cause problems
+					registers[0xF] = (registers[x] >> 7) & 0b1; // Set the bit that was shifted out to carry flag
+					registers[x] <<= 1;
+					break;
+				default:
+					unknown_instruction(instruction);
+			}
 			break;
 		case 0x9: // 9XY0: Skips if VX and VY are not equal
 			if (registers[x] != registers[y]) {
@@ -103,7 +157,7 @@ void decode_and_execute(uint16_t instruction) {
 			index_register = nnn;
 			program_counter += 2;
 			break;
-		case 0xB:
+		case 0xB: // BNNN: Jump with offset
 			break;
 		case 0xC:
 			break;
