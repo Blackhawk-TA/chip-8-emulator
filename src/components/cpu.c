@@ -235,8 +235,11 @@ void decode_and_execute(uint16_t instruction) {
 					index_register = index_register + x + 1;
 					program_counter += 2;
 					break;
-				case 0x75: // These instructions are added but not implemented, so the sc_test can be run
+				case 0x75:
 				case 0x85:
+					// These instructions are added but not implemented, so the sc_test can be run
+					// The sc_test will fail with Error 23 because those instructions are not implemented.
+					// The other sc tests should succeed.
 					program_counter += 2;
 					break;
 				default:
