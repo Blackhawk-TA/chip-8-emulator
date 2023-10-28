@@ -108,7 +108,7 @@ void decode_and_execute(uint16_t instruction) {
 					break;
 				case 0x4: // 8XY4: Add VX is set to VX + VY, affects carry flag
 					tmp = registers[x] + registers[y] > 255; // Use tmp var to prevent VF from being overwritten by result if VX = VF
-					registers[x] = registers[x] + registers[y];
+					registers[x] += registers[y];
 					registers[0xF] = tmp; // Set flag register to 1 on 8 bit overflow
 					program_counter += 2;
 					break;
@@ -119,8 +119,9 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x6: // 8XY6: Shift 1 bit right
-					registers[0xF] = registers[x] & 0b1; // Set the bit that was shifted out to carry flag
+					tmp = registers[x] & 0b1; // Set the bit that was shifted out to carry flag
 					registers[x] >>= 1;
+					registers[0xF] = tmp;
 					program_counter += 2;
 					break;
 				case 0x7: // 8XY7: Subtract sets VX to result of VY - VX
@@ -130,8 +131,9 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0xE: // 8XYE: Shift 1 bit left
-					registers[0xF] = (registers[x] >> 7) & 0b1; // Set the bit that was shifted out to carry flag
+					tmp = (registers[x] >> 7) & 0b1; // Set the bit that was shifted out to carry flag
 					registers[x] <<= 1;
+					registers[0xF] = tmp;
 					program_counter += 2;
 					break;
 				default:
@@ -193,8 +195,9 @@ void decode_and_execute(uint16_t instruction) {
 					break;
 				case 0x1E: // FX1E: Adds value of VF to index register I
 					// Writing to VF is not part of original COSMAC VIP, however some games rely on it, so it is implemented.
-					registers[0xF] = index_register + registers[x] > 0xFFF;
+					tmp = index_register + registers[x] > 0xFFF;
 					index_register += registers[x];
+					registers[0xF] = tmp;
 					program_counter += 2;
 					break;
 				case 0x0A: // FX0A: Wait until a key is pressed and writes the pressed key to VX
