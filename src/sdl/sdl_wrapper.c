@@ -11,7 +11,8 @@
 
 static const uint8_t SCALE = 10;
 static const uint64_t ONE_NANOSECOND = 1000000000;
-static uint8_t MAX_FPS = 60;
+static const uint16_t IPS = 700; // Instructions per second //TODO: Make configurable
+static const uint8_t MAX_FPS = 60;
 
 void init_sdl() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -36,7 +37,7 @@ void init_sdl() {
 	uint64_t current_time;
 	float delta_time, fps;
 
-	while (!quit) {
+	while (!quit) { // TODO use SDL_Delay for better performance.
 		// Handle interruption
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
@@ -55,11 +56,11 @@ void init_sdl() {
 		current_time = get_time_ns();
 
 		// Handle CPU cycles
-		if (current_time - last_cpu_time >= ONE_NANOSECOND / CLOCK_SPEED_HZ) {
+		if (current_time - last_cpu_time >= ONE_NANOSECOND / IPS) {
 			counter++;
 			cpu_cycle();
+			last_cpu_time = get_time_ns();
 		}
-		last_cpu_time = get_time_ns();
 
 		// Limit FPS for render loop
 		if (current_time - last_fps_time < ONE_NANOSECOND / MAX_FPS) {
