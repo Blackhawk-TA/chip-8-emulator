@@ -8,7 +8,6 @@
 
 #define LAST_MEMORY_ADDR 4095
 
-// TODO: think about renaming them to PC, I and V
 uint16_t program_counter = 0;
 uint16_t index_register = 0;
 uint8_t registers[16];

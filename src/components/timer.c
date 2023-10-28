@@ -13,7 +13,7 @@ void delay_timer_run() {
 	}
 }
 
-void sound_timer_run() {
+void sound_timer_run() { // TODO: implement sound
 	if (sound_timer > 0) {
 		sound_timer--;
 	}

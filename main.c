@@ -7,7 +7,7 @@
 #include "src/components/stack.h"
 #include "src/components/memory.h"
 
-int main(int argc, char **argv) { //TODO: Maybe add parameter for cpu clock speed
+int main(int argc, char **argv) { // TODO: Add parameter for instructions per second
 	// Get cli parameter for ROM path
 	if (argc != 2) {
 		printf("Error: Invalid amount of parameters\n");

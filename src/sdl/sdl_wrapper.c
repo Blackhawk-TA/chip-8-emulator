@@ -33,6 +33,7 @@ void init_sdl() {
 	uint64_t last_frame_draw_time = get_time_ns();
 	uint64_t current_time;
 
+	// TODO: run instructions handling and rendering on different threads with exact timing.
 	while (!quit) {
 		// Handle interruption
 		SDL_PollEvent(&event);
