@@ -13,6 +13,13 @@
 void init_sdl();
 
 /**
+ * Draws the current fps count into the console
+ * @param current_time The current time in the sdl loop in ns
+ * @param last_frame_draw_time The last time a frame was rendered in ms
+ */
+void print_fps(uint64_t current_time, uint64_t last_frame_draw_time);
+
+/**
  * Draws a pixel on the screen on the given position.
  * Scales it up 10x for better visibility, because CHIP-8 has only a 64x32 screen.
  * @param renderer The SDL renderer

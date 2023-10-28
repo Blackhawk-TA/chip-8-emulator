@@ -11,7 +11,6 @@
 
 static const uint8_t SCALE = 10;
 static const uint64_t ONE_NANOSECOND = 1000000000;
-static const uint16_t IPS = 700; // Instructions per second //TODO: Make configurable
 static const uint8_t MAX_FPS = 60;
 
 void init_sdl() {
@@ -31,63 +30,53 @@ void init_sdl() {
 	SDL_Event event;
 	int quit = 0;
 
-	uint64_t last_fps_time = get_time_ns();
-	uint64_t last_cpu_time = get_time_ns();
-	uint64_t counter = 0;
+	uint64_t last_frame_draw_time = get_time_ns();
 	uint64_t current_time;
-	float delta_time, fps;
 
-	while (!quit) { // TODO use SDL_Delay for better performance.
+	while (!quit) {
 		// Handle interruption
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-				case SDL_QUIT:
-					quit = 1;
-					break;
-				case SDL_KEYDOWN:
-					update_key_status(event.key.keysym.scancode, 1);
-					break;
-				case SDL_KEYUP:
-					update_key_status(event.key.keysym.scancode, 0);
-					break;
-			}
+		SDL_PollEvent(&event);
+		switch (event.type) {
+			case SDL_QUIT:
+				quit = 1;
+				break;
+			case SDL_KEYUP:
+				update_key_status(event.key.keysym.scancode, 0);
+				break;
+			case SDL_KEYDOWN:
+				update_key_status(event.key.keysym.scancode, 1);
+				break;
 		}
 
 		current_time = get_time_ns();
-
-		// Handle CPU cycles
-		if (current_time - last_cpu_time >= ONE_NANOSECOND / IPS) {
-			counter++;
-			cpu_cycle();
-			last_cpu_time = get_time_ns();
-		}
+		cpu_cycle(); // Handle one cpu instruction
 
 		// Limit FPS for render loop
-		if (current_time - last_fps_time < ONE_NANOSECOND / MAX_FPS) {
-			continue;
+		if (current_time - last_frame_draw_time >= ONE_NANOSECOND / MAX_FPS) {
+			render_loop(renderer);
+			SDL_RenderPresent(renderer);
+
+			// print_fps(current_time, last_frame_draw_time);
+
+			// Update last_time to the time the last frame
+			last_frame_draw_time = get_time_ns();
 		}
-		printf("%lu\n", counter);
-		counter = 0;
 
-		render_loop(renderer);
-		SDL_RenderPresent(renderer);
-
-		// Calculate FPS
-		delta_time = (float)(current_time - last_fps_time);
-		if (delta_time == 0.0) { // Prevent division by 0
-			delta_time = 1.0f;
-		}
-		fps = (float)ONE_NANOSECOND / delta_time;
-		printf("FPS: %.2f\n", fps);
-
-		// Update last_ticks for next iteration
-		last_fps_time = get_time_ns();
+		SDL_Delay(1); // Run loop only 1000x per second, which limits the instructions per second.
 	}
 
 	// Event loop and cleanup code will also go here.
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+void print_fps(uint64_t current_time, uint64_t last_frame_draw_time) {
+	float delta_time = (float)(current_time - last_frame_draw_time);
+	if (delta_time == 0.0) { // Prevent division by 0
+		delta_time = 1.0f;
+	}
+	printf("FPS: %.2f\n", (float)ONE_NANOSECOND / delta_time);
 }
 
 void sdl_draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y, uint8_t state) {
