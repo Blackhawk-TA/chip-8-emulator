@@ -15,8 +15,15 @@
 uint8_t is_key_pressed(uint8_t key);
 
 /**
- * Checks if a key is pressed.
- * @return Returns the key hex value 0-F if a key is pressed, otherwise return -1
+ * Checks if the given key was released.
+ * @param key The hex number of the key
+ * @return Returns 1 if it was released, else 0
+ */
+uint8_t is_key_released(int8_t key);
+
+/**
+ * Checks if a key is pressed and returns the first key that was pressed in the hex key array.
+ * @return Returns the key hex value 0-F if a key is pressed, otherwise return -1.
  */
 int8_t get_pressed_key();
 

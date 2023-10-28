@@ -10,6 +10,10 @@ uint8_t is_key_pressed(uint8_t key) {
 	return key_status[key];
 }
 
+uint8_t is_key_released(int8_t key) {
+	return key_status[key] == 0;
+}
+
 int8_t get_pressed_key() {
 	int8_t i = 0;
 	uint8_t is_pressed = 0;
@@ -17,7 +21,10 @@ int8_t get_pressed_key() {
 
 	while (is_pressed == 0 && i < sizeof(key_status) / sizeof(key_status[0])) {
 		is_pressed = key_status[i];
-		key = i;
+		if (is_pressed) {
+			key = i;
+			break;
+		}
 		i++;
 	}
 

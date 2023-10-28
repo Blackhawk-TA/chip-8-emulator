@@ -11,6 +11,8 @@
 #include "keypad.h"
 #include "timer.h"
 
+static int8_t global_tmp = -1; // Can be used to store values over multiple instructions.
+
 void cpu_cycle() {
 	uint16_t instruction = fetch();
 	decode_and_execute(instruction);
@@ -39,7 +41,7 @@ void decode_and_execute(uint16_t instruction) {
 	uint16_t n = instruction & 0x000F;
 	uint16_t nn = instruction & 0x00FF;
 	uint16_t nnn = instruction & 0x0FFF;
-	uint8_t tmp;
+	uint8_t tmp; // Can be used to store a value for a single instruction
 
 	switch (opcode) {
 		case 0x0:
@@ -204,11 +206,8 @@ void decode_and_execute(uint16_t instruction) {
 					registers[0xF] = tmp;
 					program_counter += 2;
 					break;
-				case 0x0A: // FX0A: Wait until a key is pressed and writes the pressed key to VX
-					if (get_pressed_key()) { // TODO: Move to own function so get_pressed_key does not need to be called twice
-						registers[x] = get_pressed_key();
-						program_counter += 2;
-					}
+				case 0x0A: // FX0A: Wait until a key is pressed and released. It writes the pressed key to VX
+					handle_get_pressed(x);
 					break;
 				case 0x29: // FX29: Font character
 					index_register = FONT_START_ADDR + FONT_BYTES_PER_CHAR * (registers[x] & 0x0F); // One char consists of 5 bytes
@@ -250,4 +249,16 @@ void decode_and_execute(uint16_t instruction) {
 void unknown_instruction(uint16_t instruction) {
 	printf("Error: Unknown instruction '0x%04x'\n", instruction);
 	exit(EXIT_FAILURE);
+}
+
+void handle_get_pressed(uint8_t x) {
+	int8_t pressed_key = get_pressed_key();
+
+	if (pressed_key != -1) { // A key was pressed, store it for next instruction to wait for release
+		global_tmp = pressed_key;
+	} else if (global_tmp != -1 && is_key_released(global_tmp)) { // global tmp is set to a key and it was released
+		registers[x] = global_tmp;
+		global_tmp = -1; // Reset global tmp variable
+		program_counter += 2;
+	}
 }

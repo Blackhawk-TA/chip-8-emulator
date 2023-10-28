@@ -7,8 +7,6 @@
 
 #include <stdint.h>
 
-extern uint32_t CLOCK_SPEED_HZ;
-
 /**
  * Fetches, decodes and executes the instruction at which the program counter points.
  */
@@ -32,5 +30,12 @@ void decode_and_execute(uint16_t instruction);
  * @param instruction The instruction hex value which is unknown
  */
 void unknown_instruction(uint16_t instruction);
+
+/**
+ * Handles the get pressed instruction FX0A.
+ * It waits for a key press, stores the key ID temporarily and waits for it to be released.
+ * @param x The address of the register VX
+ */
+void handle_get_pressed(uint8_t x);
 
 #endif //CHIP_8_EMULATOR_CPU_H
