@@ -224,6 +224,10 @@ void decode_and_execute(uint16_t instruction) {
 					}
 					program_counter += 2;
 					break;
+				case 0x75: // These instructions are added but not implemented, so the sc_test can be run
+				case 0x85:
+					program_counter += 2;
+					break;
 				default:
 					unknown_instruction(instruction);
 			}
