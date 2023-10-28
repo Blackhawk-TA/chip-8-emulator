@@ -159,7 +159,7 @@ void decode_and_execute(uint16_t instruction) {
 			program_counter += 2;
 			break;
 		case 0xB: // BNNN: Jump with offset
-			program_counter = nnn + registers[0x0]; // TODO: Might cause problems
+			program_counter = nnn + registers[0x0];
 			break;
 		case 0xC: // CXNN: Creates random number and binary ANDs it with value nn
 			registers[x] = (rand() % 256) & nn;
