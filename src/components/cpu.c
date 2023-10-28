@@ -92,18 +92,22 @@ void decode_and_execute(uint16_t instruction) {
 			switch (n) {
 				case 0x0: // 8XY0: Set VX to value of VY
 					registers[x] = registers[y];
+					registers[0xF] = 0;
 					program_counter += 2;
 					break;
 				case 0x1: // 8XY1: Binary OR
 					registers[x] |= registers[y];
+					registers[0xF] = 0;
 					program_counter += 2;
 					break;
 				case 0x2: // 8XY2: Binary AND
 					registers[x] &= registers[y];
+					registers[0xF] = 0;
 					program_counter += 2;
 					break;
 				case 0x3: // 8XY3: Binary XOR
 					registers[x] ^= registers[y];
+					registers[0xF] = 0;
 					program_counter += 2;
 					break;
 				case 0x4: // 8XY4: Add VX is set to VX + VY, affects carry flag
