@@ -27,3 +27,5 @@ add_executable(chip_8_emulator main.c
 
 find_package(SDL2 REQUIRED)
 target_link_libraries(chip_8_emulator PRIVATE SDL2::SDL2)
+target_include_directories(chip_8_emulator PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(chip_8_emulator PRIVATE ${SDL2_LIBRARY_DIRS})
