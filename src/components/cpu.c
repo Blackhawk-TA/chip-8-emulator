@@ -125,6 +125,7 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x6: // 8XY6: Shift 1 bit right
+					registers[x] = registers[y];
 					tmp = registers[x] & 0b1; // Set the bit that was shifted out to carry flag
 					registers[x] >>= 1;
 					registers[0xF] = tmp;
@@ -137,6 +138,7 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0xE: // 8XYE: Shift 1 bit left
+					registers[x] = registers[y];
 					tmp = (registers[x] >> 7) & 0b1; // Set the bit that was shifted out to carry flag
 					registers[x] <<= 1;
 					registers[0xF] = tmp;
