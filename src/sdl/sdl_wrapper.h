@@ -18,7 +18,8 @@ void init_sdl();
  * @param renderer The SDL renderer
  * @param x The x position of the pixel
  * @param y The y position of the pixel
+ * @param state The state of the pixel to draw. If set to 0, the pixel is black, else it is white
  */
-void sdl_draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y);
+void sdl_draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y, uint8_t state);
 
 #endif //CHIP_8_EMULATOR_SDL_WRAPPER_H

@@ -15,9 +15,7 @@ void render_loop(SDL_Renderer *renderer) {
 	// Render pixels of the entire display
 	for (int x = 0; x < WIDTH; x++) {
 		for (int y = 0; y < HEIGHT; y++) {
-			if (display[x][y]) {
-				sdl_draw_px(renderer, x, y);
-			}
+			sdl_draw_px(renderer, x, y, display[x][y]);
 		}
 	}
 }

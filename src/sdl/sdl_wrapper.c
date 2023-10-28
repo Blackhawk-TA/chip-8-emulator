@@ -26,7 +26,6 @@ void init_sdl() {
 	}
 
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Set to color to white => monochrome display
 
 	SDL_Event event;
 	int quit = 0;
@@ -90,7 +89,12 @@ void init_sdl() {
 	SDL_Quit();
 }
 
-void sdl_draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y) {
+void sdl_draw_px(SDL_Renderer *renderer, uint8_t x, uint8_t y, uint8_t state) {
+	if (state == 0) {
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Set to color to black
+	} else {
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Set to color to white => monochrome display
+	}
 	SDL_Rect rect = {x * SCALE, y * SCALE, 1 * SCALE, 1 * SCALE};
 	SDL_RenderFillRect(renderer, &rect);
 }
