@@ -224,12 +224,14 @@ void decode_and_execute(uint16_t instruction) {
 					for (uint16_t i = 0; i <= x; i++) {
 						memory_write(index_register + i, registers[i]);
 					}
+					index_register = index_register + x + 1;
 					program_counter += 2;
 					break;
 				case 0x65: // FX65: Load memory
 					for (uint16_t i = 0; i <= x; i++) {
 						registers[i] = memory_read(index_register + i);
 					}
+					index_register = index_register + x + 1;
 					program_counter += 2;
 					break;
 				case 0x75: // These instructions are added but not implemented, so the sc_test can be run
