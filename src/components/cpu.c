@@ -11,9 +11,6 @@
 #include "keypad.h"
 #include "timer.h"
 
-uint32_t CLOCK_SPEED_HZ = 1000000; // 1 MHz //TODO change, so it is variable.
-
-//TODO: It should handle around 700 instructions (cpu cycles) per second
 void cpu_cycle() {
 	uint16_t instruction = fetch();
 	decode_and_execute(instruction);
@@ -42,6 +39,7 @@ void decode_and_execute(uint16_t instruction) {
 	uint16_t n = instruction & 0x000F;
 	uint16_t nn = instruction & 0x00FF;
 	uint16_t nnn = instruction & 0x0FFF;
+	uint8_t tmp;
 
 	switch (opcode) {
 		case 0x0:
@@ -109,13 +107,15 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x4: // 8XY4: Add VX is set to VX + VY, affects carry flag
-					registers[0xF] = registers[x] + registers[y] > 255; // Set flag register to 1 on 8 bit overflow
-					registers[x] += registers[y];
+					tmp = registers[x] + registers[y] > 255; // Use tmp var to prevent VF from being overwritten by result if VX = VF
+					registers[x] = registers[x] + registers[y];
+					registers[0xF] = tmp; // Set flag register to 1 on 8 bit overflow
 					program_counter += 2;
 					break;
 				case 0x5: // 8XY5: Subtract sets VX to result of VX - VY
-					registers[0xF] = registers[x] >= registers[y];
+					tmp = registers[x] >= registers[y];
 					registers[x] -= registers[y];
+					registers[0xF] = tmp;
 					program_counter += 2;
 					break;
 				case 0x6: // 8XY6: Shift 1 bit right
@@ -124,8 +124,9 @@ void decode_and_execute(uint16_t instruction) {
 					program_counter += 2;
 					break;
 				case 0x7: // 8XY7: Subtract sets VX to result of VY - VX
-					registers[0xF] = registers[y] >= registers[x];
+					tmp = registers[y] >= registers[x];
 					registers[x] = registers[y] - registers[x];
+					registers[0xF] = tmp;
 					program_counter += 2;
 					break;
 				case 0xE: // 8XYE: Shift 1 bit left
